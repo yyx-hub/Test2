@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.TopicMapper">
+
+    <!--查询所有帖子-->
+    <select id="topicInfo" resultType="education.pojo.Topic">
+        select t.topic_id,t.topic_time,t.topic_name,t.topic_content,t.replys,t.looks,u.user_img,u.user_name,c.course_name from edu_topic t inner join edu_users u on t.user_id=u.user_id
+       inner join edu_course c on c.course_id=t.course_id
+    </select>
+    <resultMap id="BaseResultMap" type="education.pojo.Block">
+        <id column="block_id" jdbcType="INTEGER" property="blockId" />
+        <result column="block_name" jdbcType="VARCHAR" property="blockName" />
+        <result column="block_desc" jdbcType="VARCHAR" property="blockDesc" />
+        <result column="block_order" jdbcType="VARCHAR" property="blockOrder" />
+        <result column="block_visibility" jdbcType="INTEGER" property="blockVisibility" />
+    </resultMap>
+    <resultMap id="BaseResultMaps" type="education.pojo.Course">
+        <id column="course_id" jdbcType="INTEGER" property="courseId" />
+        <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+        <result column="tag_id" jdbcType="INTEGER" property="tagId" />
+        <result column="online_date" jdbcType="DATE" property="onlineDate" />
+        <result column="course_desc" jdbcType="VARCHAR" property="courseDesc" />
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+        <result column="course_imgAdd" jdbcType="VARCHAR" property="imgAdd" />
+        <result column="course_price" jdbcType="INTEGER" property="coursePrice" />
+        <result column="course_hour" jdbcType="INTEGER" property="courseHour" />
+        <result column="course_easy" jdbcType="INTEGER" property="courseEasy" />
+        <result column="course_add" jdbcType="VARCHAR" property="courseAdd" />
+    </resultMap>
+    <!--查询所有板块-->
+<select id="blockInfo" resultMap="BaseResultMap">
+    select * from edu_block
+</select>
+    <!--查询所有用户-->
+    <select id="userInfo" resultType="education.pojo.User">
+        select * from edu_users
+    </select>
+    <!--查询所有课程-->
+    <select id="courseInfo" resultMap="BaseResultMaps">
+        select * from edu_course
+    </select>
+    <!--新增帖子-->
+    <insert id="addTopics" parameterType="education.pojo.Edu_topic">
+        insert into edu_topic values (DEFAULT,#{topic_time},#{topic_name},#{topic_content},#{block_id},#{user_id},#{course_id},#{replys},#{looks})
+    </insert>
+</mapper>

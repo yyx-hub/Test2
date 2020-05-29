@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.AdminMapper">
+    <!--通过管理员查询菜单-->
+    <select id="login" parameterType="education.pojo.Admin" resultType="education.pojo.Menu">
+       select m.* from edu_menu  m
+inner join  edu_rolemenu r on m.menu_id=r.menu_id
+inner join edu_role  l on r.role_id=l.role_id
+inner join edu_adminrole u on  u.role_id=l.role_id
+inner join edu_admin a on a.admin_id=u.admin_id
+where a.admin_name=#{admin_name} and a.admin_pwd=#{admin_pwd}
+    </select>
+    <!--查询管理员-->
+  <select id="adminInfo" resultType="education.pojo.Admin">
+      select * from edu_admin
+  </select>
+    <!--根据ID查管理员-->
+    <select id="updateadmin" parameterType="int" resultType="education.pojo.Admin">
+        select * from edu_admin where admin_id=#{value}
+    </select>
+    <!--修改管理员-->
+    <update id="updateadmins" parameterType="education.pojo.Admin">
+        update edu_admin set admin_name=#{admin_name},admin_pwd=#{admin_pwd},adminphone=#{adminphone} where admin_id=#{admin_id}
+    </update>
+    <!--删除管理员-->
+    <delete id="deleteadmin" parameterType="int">
+        delete from edu_admin where admin_id=#{value}
+    </delete>
+    <!--增加管理员-->
+    <insert id="addadmin" parameterType="education.pojo.AdminRole" >
+        insert into edu_admin values(DEFAULT ,#{admin_name},#{admin_pwd},#{adminphone});
+    </insert>
+    <!--查询增加的ID-->
+    <select id="suxadmin" parameterType="education.pojo.AdminRole" resultType="int">
+        select admin_id from edu_admin where admin_name=#{admin_name} and admin_pwd=#{admin_pwd}
+    </select>
+    <!--增加权限-->
+    <insert id="addusro" parameterType="education.pojo.RoleAdmin">
+        insert into edu_adminrole values(DEFAULT ,#{role_id},#{admin_id});
+    </insert>
+    <!--批量删除-->
+    <delete id="deleteadminById" parameterType="int">
+        delete from edu_admin where admin_id=#{value}
+    </delete>
+</mapper>

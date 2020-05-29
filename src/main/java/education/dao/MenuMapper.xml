@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.MenuMapper">
+    <!--根据ID删除角色菜单表中内容-->
+    <delete id="deleterolemenu" parameterType="int">
+        delete from edu_rolemenu where menu_id=#{menu_id}
+    </delete>
+   <!--根据ID删除菜单-->
+    <delete id="deletemenu" parameterType="int"  >
+        delete from edu_menu where menu_id=#{menu_id}
+    </delete>
+    <!--根据ID查菜单-->
+    <select id="menuInfo" parameterType="education.pojo.Menu" resultType="education.pojo.Menu">
+        select * from edu_menu where menu_id=#{menu_id}
+    </select>
+    <!--修改菜单-->
+  <update id="updatemenu" parameterType="education.pojo.Menu">
+      update edu_menu set menu_name=#{menu_name},menu_code=#{menu_code},last_menu=#{last_menu},menu_line=#{menu_line},menu_url=#{menu_url} where menu_id=#{menu_id}
+  </update>
+    <!--查询主菜单-->
+    <select id="selectmenu" parameterType="int" resultType="education.pojo.Menu">
+        select * from edu_menu where last_menu=11110
+    </select>
+    <!--分页组合查询-->
+    <select id="menulist" parameterType="String" resultType="education.pojo.Menu">
+        select * from edu_menu where 1=1
+        <if test="menu_name!=null">
+            and menu_name like '%${menu_name}%'
+        </if>
+    </select>
+    <!--增加菜单-->
+    <insert id="addmenu" parameterType="education.pojo.Menu">
+        insert into edu_menu values(DEFAULT ,#{menu_name},#{menu_code},#{last_menu},#{menu_line},#{menu_url});
+    </insert>
+</mapper>

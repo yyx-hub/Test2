@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.CareMapper">
+  <resultMap id="BaseResultMap" type="education.pojo.Care">
+    <id column="care_id" jdbcType="INTEGER" property="careId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+  </resultMap>
+
+  <!-- 查询所有关注信息 -->
+  <select id="careList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from edu_care
+  </select>
+
+  <!-- 根据ID查询关注信息 -->
+  <sql id="Base_Column_List">
+    care_id, user_id, course_id
+  </sql>
+  <select id="selectByID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from edu_care
+    where care_id = #{careId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据ID删除关注信息 -->
+  <delete id="deleteByID" parameterType="java.lang.Integer">
+    delete from edu_care
+    where care_id = #{careId,jdbcType=INTEGER}
+  </delete>
+
+  <!-- 添加关注信息 -->
+  <insert id="insert" parameterType="education.pojo.Care">
+    insert into edu_care (care_id, user_id, course_id
+      )
+    values (#{careId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <!-- 添加关注信息 -->
+  <insert id="insertSelective" parameterType="education.pojo.Care">
+    insert into edu_care
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="careId != null">
+        care_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="courseId != null">
+        course_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="careId != null">
+        #{careId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        #{courseId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 根据ID修改 -->
+  <update id="updateByIDSelective" parameterType="education.pojo.Care">
+    update edu_care
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where care_id = #{careId,jdbcType=INTEGER}
+  </update>
+
+  <!-- 根据ID修改 -->
+  <update id="updateByID" parameterType="education.pojo.Care">
+    update edu_care
+    set user_id = #{userId,jdbcType=INTEGER},
+      course_id = #{courseId,jdbcType=INTEGER}
+    where care_id = #{careId,jdbcType=INTEGER}
+  </update>
+</mapper>

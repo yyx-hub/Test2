@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.RouteMapper">
+  <resultMap id="BaseResultMap" type="education.pojo.Route">
+    <id column="route_id" jdbcType="INTEGER" property="routeId" />
+    <result column="route_name" jdbcType="VARCHAR" property="routeName" />
+    <result column="route_desc" jdbcType="VARCHAR" property="routeDesc" />
+    <result column="route_count" jdbcType="INTEGER" property="routeCount" />
+    <result column="course_count" jdbcType="INTEGER" property="courseCount" />
+    <result column="route_detail" jdbcType="VARCHAR" property="routeDetail" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    route_id, route_name, route_desc, route_count, course_count, route_detail, comment
+  </sql>
+
+  <!-- 查询所有路径信息 -->
+  <select id="routeList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from edu_route
+  </select>
+
+
+  <!-- 分页查询路径信息 -->
+  <select id="routePage" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from edu_route
+    where 1=1
+    <if test="routename != null">
+      and route_name like '%${routename}%'
+    </if>
+    <if test="routedesc != null">
+      and route_desc like '%${routedesc}%'
+    </if>
+  </select>
+
+  <!-- 根据ID查询路径信息 -->
+  <select id="selectRouteById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from edu_route
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据ID删除路径信息 -->
+  <delete id="deleteRouteById" parameterType="java.lang.Integer">
+    delete from edu_route
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </delete>
+
+  <!-- 添加路径信息 -->
+  <insert id="insert" parameterType="education.pojo.Route">
+    insert into edu_route (route_id, route_name, route_desc, 
+      route_count, course_count, route_detail, 
+      comment)
+    values (#{routeId,jdbcType=INTEGER}, #{routeName,jdbcType=VARCHAR}, #{routeDesc,jdbcType=VARCHAR}, 
+      #{routeCount,jdbcType=INTEGER}, #{courseCount,jdbcType=INTEGER}, #{routeDetail,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 添加路径信息 -->
+  <insert id="insertSelective" parameterType="education.pojo.Route">
+    insert into edu_route
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="routeId != null">
+        route_id,
+      </if>
+      <if test="routeName != null">
+        route_name,
+      </if>
+      <if test="routeDesc != null">
+        route_desc,
+      </if>
+      <if test="routeCount != null">
+        route_count,
+      </if>
+      <if test="courseCount != null">
+        course_count,
+      </if>
+      <if test="routeDetail != null">
+        route_detail,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="routeId != null">
+        #{routeId,jdbcType=INTEGER},
+      </if>
+      <if test="routeName != null">
+        #{routeName,jdbcType=VARCHAR},
+      </if>
+      <if test="routeDesc != null">
+        #{routeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCount != null">
+        #{routeCount,jdbcType=INTEGER},
+      </if>
+      <if test="courseCount != null">
+        #{courseCount,jdbcType=INTEGER},
+      </if>
+      <if test="routeDetail != null">
+        #{routeDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 修改径信息 -->
+  <update id="updateRouteByIdSelective" parameterType="education.pojo.Route">
+    update edu_route
+    <set>
+      <if test="routeName != null">
+        route_name = #{routeName,jdbcType=VARCHAR},
+      </if>
+      <if test="routeDesc != null">
+        route_desc = #{routeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCount != null">
+        route_count = #{routeCount,jdbcType=INTEGER},
+      </if>
+      <if test="courseCount != null">
+        course_count = #{courseCount,jdbcType=INTEGER},
+      </if>
+      <if test="routeDetail != null">
+        route_detail = #{routeDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </update>
+
+  <!-- 修改径信息 -->
+  <update id="updateRouteById" parameterType="education.pojo.Route">
+    update edu_route
+    set route_name = #{routeName,jdbcType=VARCHAR},
+      route_desc = #{routeDesc,jdbcType=VARCHAR},
+      route_count = #{routeCount,jdbcType=INTEGER},
+      course_count = #{courseCount,jdbcType=INTEGER},
+      route_detail = #{routeDetail,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR}
+    where route_id = #{routeId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

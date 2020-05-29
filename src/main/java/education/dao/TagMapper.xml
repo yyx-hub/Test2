@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.TagMapper">
+  <resultMap id="BaseResultMap" type="education.pojo.Tag">
+    <id column="tag_id" jdbcType="INTEGER" property="tagId" />
+    <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
+    <result column="tag_desc" jdbcType="VARCHAR" property="tagDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tag_id, tag_name, tag_desc
+  </sql>
+
+  <!--无条件查询所有标签-->
+  <select id="selTagList" resultMap="BaseResultMap">
+    select  * from edu_tag
+  </select>
+
+  <!--查询所有标签信息-->
+  <select id="selectList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from edu_tag where 1=1
+    <if test="tagName!=null">
+      and tag_name like  '%${tagName}%'
+    </if>
+  </select>
+  <!--根据主键查询信息-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from edu_tag
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </select>
+  <!--根据主键id删除数据 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from edu_tag
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </delete>
+  <!--向tag表中添加数据-->
+  <insert id="insert" parameterType="education.pojo.Tag">
+    insert into edu_tag (tag_name, tag_desc
+      )
+    values (#{tagName,jdbcType=VARCHAR}, #{tagDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <!--修改数据-->
+  <update id="updateByPrimaryKey" parameterType="education.pojo.Tag">
+    update edu_tag
+    set tag_name = #{tagName,jdbcType=VARCHAR},
+      tag_desc = #{tagDesc,jdbcType=VARCHAR}
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </update>
+
+  <!--查询所有标签名-->
+  <select id="selectTagName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select tag_id,tag_name from edu_tag
+  </select>
+</mapper>

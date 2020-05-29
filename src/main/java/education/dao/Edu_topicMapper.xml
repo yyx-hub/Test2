@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.Edu_topicMapper">
+
+    <!--查询所有帖子-->
+    <select id="allTopic" resultType="education.pojo.Edu_topic">
+        select * from edu_topic
+    </select>
+    <!--查询一个帖子-->
+    <select id="findTopicbyid" parameterType="int" resultType="education.pojo.Edu_topic">
+        select * from edu_topic where topic_id=#{topic_id}
+    </select>
+
+    <!--修改帖子-->
+    <update id="updateTopic" parameterType="education.pojo.Edu_topic">
+        update edu_topic set topic_time=#{topic_time},topic_name=#{topic_name},topic_content=#{topic_content},block_id=#{block_id},
+        user_id=#{user_id},teacher_id=#{teacher_id} where topic_id=#{topic_id}
+    </update>
+
+    <!--删除帖子-->
+    <delete id="deleteTopic" parameterType="int">
+        delete from edu_topic where topic_id=#{topic_id}
+    </delete>
+    <!--新增帖子-->
+    <insert id="addTopic" parameterType="education.pojo.Edu_topic">
+        insert into edu_topic values (#{topic_time},#{topic_name},#{topic_content},#{block_id},#{user_id},#{teacher_id})
+    </insert>
+
+
+</mapper>

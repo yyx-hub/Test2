@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="education.dao.UserMapper">
+<!-- @author xulibin -->
+
+    <!-- 用户登入 -->
+    <select id="userLogin" parameterType="Map" resultType="education.pojo.User">
+        select * from edu_users
+        where user_phone=#{phone} and user_password=#{password}
+    </select>
+
+    <!-- 验证手机号码 -->
+    <select id="checkPhone" parameterType="java.lang.String" resultType="Integer">
+        select count(user_phone) from edu_users where user_phone=#{phone}
+    </select>
+
+    <!-- 根据员工ID找用户 -->
+    <select id="queryUserById" parameterType="Integer" resultType="education.pojo.User">
+        select * from edu_users where user_id=#{userId}
+    </select>
+
+    <!-- 查询所有用户 -->
+    <select id="queryUserList" parameterType="Map" resultType="education.pojo.User">
+        select *  from edu_users where 1=1
+        <if test="username!=null">
+            and user_name like  '%${username}%'
+        </if>
+        <if test="userphone!=null">
+            and user_phone like '%${userphone}%'
+        </if>
+    </select>
+
+    <!-- 根据ID删用户 -->
+    <delete id="deleteUserById" parameterType="Integer" >
+        delete from edu_users  where user_id=#{userId}
+    </delete>
+
+    <!-- 添加用户 -->
+    <insert id="insertUser" parameterType="education.pojo.User">
+        insert into edu_users(user_nickname,user_name,user_img,user_state,user_phone,user_email,user_password,vip)
+         values(#{user_nickname},#{user_name},#{user_img},#{user_state},#{user_phone},#{user_email},#{user_password},#{vip})
+    </insert>
+
+    <!-- 修改用户信息 -->
+    <update id="updateUser" parameterType="education.pojo.User">
+        update edu_users
+        set user_nickname=#{user_nickname},user_name=#{user_name},user_img=#{user_img},user_state=#{user_state},user_phone=#{user_phone},user_email=#{user_email},user_password=#{user_password},vip=#{vip}
+        where user_id=#{user_id}
+    </update>
+</mapper>
